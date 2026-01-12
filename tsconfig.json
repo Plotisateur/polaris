@@ -1,0 +1,48 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "ESNext",
+    "lib": ["ES2022"],
+    "moduleResolution": "bundler",
+    "resolveJsonModule": true,
+    "allowJs": true,
+    "checkJs": false,
+    "outDir": "./dist",
+    "rootDir": ".",
+    
+    "declaration": true,
+    "declarationMap": true,
+    "sourceMap": true,
+    "inlineSources": true,
+    
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitReturns": true,
+    "noUncheckedIndexedAccess": true,
+    // "exactOptionalPropertyTypes": true,  // Disabled for now - causing issues with Express types
+    "noPropertyAccessFromIndexSignature": true,
+    
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "skipLibCheck": true,
+    
+    "paths": {
+      "@loreal/cli": ["./packages/cli/src"],
+      "@loreal/code-style": ["./packages/modules/loreal-code-style/src"],
+      "@loreal/logger": ["./packages/modules/loreal-logger/src"],
+      "@loreal/testing": ["./packages/modules/loreal-testing/src"],
+      "@loreal/authentication": ["./packages/modules/loreal-authentication/src"],
+      "@loreal/authorization": ["./packages/modules/loreal-authorization/src"],
+      "@loreal/emails": ["./packages/modules/loreal-emails/src"],
+      "@loreal/analytics": ["./packages/modules/loreal-analytics/src"],
+      "@loreal/prisma-orm-setup": ["./packages/modules/loreal-prisma-orm-setup/src"],
+      "@loreal/e2e-api": ["./packages/modules/loreal-e2e-api/src"],
+      "@loreal/feature-flag": ["./packages/modules/loreal-feature-flag/src"],
+      "@loreal/design-system": ["./packages/modules/loreal-design-system/src"]
+    }
+  },
+  "include": ["packages/**/*"],
+  "exclude": ["node_modules", "dist", "**/dist", "**/node_modules"]
+}

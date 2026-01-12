@@ -1,0 +1,90 @@
+{
+  "name": "@polaris/authentication",
+  "version": "1.2.0",
+  "description": "Polaris Authentication Module - OIDC, IAP, and Entra ID support",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "publishConfig": {
+    "registry": "https://europe-west1-npm.pkg.dev/itg-btshared-gbl-ww-pd/oo-ar-web-packages-ew1-pd/"
+  },
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./middleware": {
+      "import": "./dist/middleware.js",
+      "types": "./dist/middleware.d.ts"
+    },
+    "./react": {
+      "import": "./dist/react.js",
+      "types": "./dist/react.d.ts"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "IMPLEMENTATION_GUIDE.md"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "test": "vitest",
+    "type-check": "tsc --noEmit",
+    "clean": "rimraf dist",
+    "lint": "eslint . --max-warnings=0",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
+  },
+  "dependencies": {
+    "dotenv": "^17.2.3",
+    "express": "^4.18.2",
+    "jsonwebtoken": "^9.0.2",
+    "jwks-rsa": "^3.1.0"
+  },
+  "peerDependencies": {
+    "@polaris/logger": "^1.0.0",
+    "react": ">=18.0.0",
+    "react-dom": ">=18.0.0"
+  },
+  "peerDependenciesMeta": {
+    "@polaris/logger": {
+      "optional": true
+    },
+    "react": {
+      "optional": true
+    },
+    "react-dom": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "@polaris/code-style": "file:../loreal-code-style",
+    "@types/express": "^4.17.21",
+    "@types/jsonwebtoken": "^9.0.5",
+    "@types/node": "^20.11.5",
+    "@types/react": "^18.3.27",
+    "eslint": "^9.17.0",
+    "prettier": "^3.4.2",
+    "rimraf": "^5.0.5",
+    "tsup": "^8.0.1",
+    "typescript": "^5.3.3",
+    "vitest": "^1.2.0"
+  },
+  "keywords": [
+    "loreal",
+    "authentication",
+    "oidc",
+    "iap",
+    "entra-id",
+    "azure-ad",
+    "jwt",
+    "oauth2",
+    "express",
+    "middleware"
+  ],
+  "author": "L'Oréal Engineering Team",
+  "license": "PROPRIETARY"
+}

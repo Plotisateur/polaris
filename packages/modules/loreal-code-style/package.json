@@ -1,0 +1,56 @@
+{
+  "name": "@polaris/code-style",
+  "version": "1.0.0",
+  "description": "Shared ESLint, Prettier, and TypeScript configuration for L'Oréal projects",
+  "type": "module",
+  "main": "./index.js",
+  "publishConfig": {
+    "registry": "https://europe-west1-npm.pkg.dev/itg-btshared-gbl-ww-pd/oo-ar-web-packages-ew1-pd/"
+  },
+  "exports": {
+    ".": "./index.js",
+    "./eslint": "./eslint.config.js",
+    "./prettier": "./prettier.config.js",
+    "./tsconfig": "./tsconfig.base.json",
+    "./tsconfig-react": "./tsconfig.react.json"
+  },
+  "files": [
+    "eslint.config.js",
+    "prettier.config.js",
+    "tsconfig.base.json",
+    "tsconfig.react.json",
+    "index.js",
+    "README.md"
+  ],
+  "scripts": {
+    "test": "echo \"No tests for config package\" && exit 0"
+  },
+  "keywords": [
+    "eslint",
+    "prettier",
+    "typescript",
+    "code-style",
+    "polaris",
+    "loreal"
+  ],
+  "author": "L'Oréal",
+  "license": "ISC",
+  "peerDependencies": {
+    "eslint": "^9.0.0",
+    "prettier": "^3.0.0",
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "@typescript-eslint/eslint-plugin": "^8.19.1",
+    "@typescript-eslint/parser": "^8.19.1",
+    "eslint-config-prettier": "^10.0.1",
+    "eslint-plugin-import": "^2.31.0",
+    "eslint-plugin-react": "^7.37.2",
+    "eslint-plugin-react-hooks": "^5.1.0"
+  },
+  "devDependencies": {
+    "eslint": "^9.17.0",
+    "prettier": "^3.4.2",
+    "typescript": "^5.9.3"
+  }
+}

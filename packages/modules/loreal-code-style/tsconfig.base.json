@@ -1,0 +1,45 @@
+{
+  "compilerOptions": {
+    // Language & environment
+    "target": "ES2022",
+    "lib": ["ES2023"],
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    
+    // Type checking (strict)
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitReturns": true,
+    "noUncheckedIndexedAccess": true,
+    "exactOptionalPropertyTypes": true,
+    
+    // Modules
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    
+    // Emit
+    "declaration": true,
+    "declarationMap": true,
+    "sourceMap": true,
+    "outDir": "./dist",
+    "removeComments": false,
+    
+    // Interop constraints
+    "forceConsistentCasingInFileNames": true,
+    "skipLibCheck": true,
+    
+    // Advanced
+    "allowImportingTsExtensions": false
+  },
+  "exclude": [
+    "node_modules",
+    "dist",
+    "build",
+    "*.config.js",
+    "*.config.ts"
+  ]
+}

@@ -1,0 +1,52 @@
+{
+  "name": "@loreal/polaris-monorepo",
+  "version": "1.0.0",
+  "private": true,
+  "description": "L'Oréal Polaris Framework - Internal CLI toolkit for consistent web project scaffolding",
+  "type": "module",
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "scripts": {
+    "build": "pnpm -r run build",
+    "dev": "pnpm -r --parallel run dev",
+    "test": "vitest",
+    "test:ui": "vitest --ui",
+    "test:coverage": "vitest --coverage",
+    "lint": "eslint . --ext .ts,.tsx",
+    "lint:fix": "eslint . --ext .ts,.tsx --fix",
+    "format": "prettier --write \"**/*.{ts,tsx,json,md}\"",
+    "format:check": "prettier --check \"**/*.{ts,tsx,json,md}\"",
+    "type-check": "pnpm -r --parallel run type-check",
+    "clean": "pnpm -r --parallel run clean && rimraf node_modules",
+    "polaris": "node packages/cli/dist/cli.js"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.5",
+    "@typescript-eslint/eslint-plugin": "^7.0.0",
+    "@typescript-eslint/parser": "^7.0.0",
+    "@vitest/coverage-v8": "^1.2.0",
+    "@vitest/ui": "^1.2.0",
+    "eslint": "^8.56.0",
+    "eslint-config-prettier": "^9.1.0",
+    "prettier": "^3.2.4",
+    "rimraf": "^5.0.5",
+    "tsup": "^8.0.1",
+    "typescript": "^5.3.3",
+    "vitest": "^1.2.0"
+  },
+  "keywords": [
+    "loreal",
+    "polaris",
+    "cli",
+    "monorepo",
+    "typescript",
+    "framework",
+    "scaffolding"
+  ],
+  "author": "L'Oréal Engineering Team",
+  "license": "PROPRIETARY",
+  "dependencies": {
+    "dotenv": "^17.2.3"
+  }
+}

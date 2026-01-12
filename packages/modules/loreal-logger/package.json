@@ -1,0 +1,45 @@
+{
+  "name": "@polaris/logger",
+  "version": "1.0.0",
+  "description": "Structured logging with Winston + Sentry integration",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "publishConfig": {
+    "registry": "https://europe-west1-npm.pkg.dev/itg-btshared-gbl-ww-pd/oo-ar-web-packages-ew1-pd/"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "test": "vitest",
+    "type-check": "tsc --noEmit",
+    "clean": "rimraf dist",
+    "lint": "eslint . --max-warnings=0",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
+  },
+  "dependencies": {
+    "winston": "^3.11.0",
+    "@sentry/node": "^7.99.0"
+  },
+  "devDependencies": {
+    "@polaris/code-style": "file:../loreal-code-style",
+    "@types/node": "^20.11.5",
+    "eslint": "^9.17.0",
+    "prettier": "^3.4.2",
+    "rimraf": "^5.0.5",
+    "tsup": "^8.0.1",
+    "typescript": "^5.3.3",
+    "vitest": "^1.2.0"
+  },
+  "keywords": ["loreal", "logger", "winston", "sentry"],
+  "author": "L'Oréal Engineering Team",
+  "license": "PROPRIETARY"
+}
