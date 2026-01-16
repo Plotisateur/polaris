@@ -1,0 +1,20 @@
+FROM --platform=linux/amd64 node:22.15.0
+ENV PNPM_HOME="/pnpm"
+ENV PATH="$PNPM_HOME:$PATH"
+RUN corepack enable
+RUN corepack prepare pnpm@latest-9 --activate
+
+WORKDIR /home/node
+
+RUN apk update && apk add python3 build-base linux-headers
+
+COPY package.json .
+COPY pnpm-lock.yaml .
+
+RUN pnpm install
+
+COPY . .
+
+EXPOSE 8000
+
+CMD ["sh", "/home/node/helpers/test.sh"]

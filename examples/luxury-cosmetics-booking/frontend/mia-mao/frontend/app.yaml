@@ -1,0 +1,11 @@
+runtime: nodejs18
+service: frontend
+
+handlers:
+  - url: /.*
+    secure: always
+    redirect_http_response_code: 301
+    script: auto
+
+env_variables:
+  VITE_API_URL: 'TO_CHANGE_BACKEND_URL'

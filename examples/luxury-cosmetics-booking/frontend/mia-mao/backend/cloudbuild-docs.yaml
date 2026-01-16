@@ -1,0 +1,20 @@
+steps:
+- id: Deploy to github pages
+  name: python
+  entrypoint: '/bin/bash'
+  args:
+  - '-c'
+  - |
+    echo $$NETRC > ~/.netrc
+    cat << EOF > ~/.gitconfig
+    [url "https://github.com/"]
+      insteadOf = ssh://git@github.com/
+    EOF
+    pip install mkdocs
+    mkdocs gh-deploy
+  secretEnv: ['NETRC']
+
+availableSecrets:
+  secretManager:
+  - versionName: projects/$DEVOPS_PROJECT_ID/secrets/NETRC/versions/latest
+    env: NETRC

@@ -93,8 +93,12 @@ const AVAILABLE_MODULES: Record<string, ModuleInfo> = {
   },
 };
 
-export async function addCommand(moduleName: string, _options: AddOptions): Promise<void> {
-  console.log(chalk.bold.blue(`\n🔧 Adding module: ${moduleName}\n`));
+export async function addCommand(moduleName: string, options: AddOptions): Promise<void> {
+  const silent = options.yes;
+  
+  if (!silent) {
+    console.log(chalk.bold.blue(`\n🔧 Adding module: ${moduleName}\n`));
+  }
 
   // Check if .npmrc exists, if not run setup automatically
   const { existsSync } = await import('fs');
@@ -102,10 +106,14 @@ export async function addCommand(moduleName: string, _options: AddOptions): Prom
   const npmrcPath = path.join(process.cwd(), '.npmrc');
 
   if (!existsSync(npmrcPath)) {
-    console.log(chalk.yellow('⚠️  Project not configured for Polaris. Running setup...\n'));
+    if (!silent) {
+      console.log(chalk.yellow('⚠️  Project not configured for Polaris. Running setup...\n'));
+    }
     const { setupCommand } = await import('./setup.js');
     await setupCommand();
-    console.log(); // Empty line
+    if (!silent) {
+      console.log(); // Empty line
+    }
   }
 
   const module = AVAILABLE_MODULES[moduleName];
@@ -122,7 +130,10 @@ export async function addCommand(moduleName: string, _options: AddOptions): Prom
     process.exit(1);
   }
 
-  const spinner = ora(`Installing ${module.displayName}...`).start();
+  let spinner;
+  if (!silent) {
+    spinner = ora(`Installing ${module.displayName}...`).start();
+  }
 
   try {
     const { execSync } = await import('child_process');
@@ -130,13 +141,15 @@ export async function addCommand(moduleName: string, _options: AddOptions): Prom
     const installCommand = `npm install ${module.packageName}`;
 
     execSync(installCommand, {
-      stdio: 'inherit',
+      stdio: silent ? 'pipe' : 'inherit',
       cwd: process.cwd(),
     });
 
-    spinner.succeed(chalk.green(`${module.displayName} installed successfully!`));
+    if (spinner) {
+      spinner.succeed(chalk.green(`${module.displayName} installed successfully!`));
+    }
 
-    if (moduleName === 'loreal-logger') {
+    if (!silent && moduleName === 'loreal-logger') {
       console.log(chalk.bold('📝 Example:\n'));
       console.log(chalk.gray(`  import { log } from '${module.packageName}';`));
       console.log(chalk.gray(`  `));
@@ -145,8 +158,12 @@ export async function addCommand(moduleName: string, _options: AddOptions): Prom
       console.log();
     }
   } catch (error) {
-    spinner.fail(chalk.red('Failed to add module'));
-    console.error(error);
+    if (spinner) {
+      spinner.fail(chalk.red('Failed to add module'));
+    }
+    if (!silent) {
+      console.error(error);
+    }
     process.exit(1);
   }
 }

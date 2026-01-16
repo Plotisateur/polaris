@@ -1,4 +1,5 @@
 import axios from 'axios';
+
 import type { Product, Booking, ApiResponse } from '../types';
 
 const API_BASE_URL = 'http://localhost:3001';

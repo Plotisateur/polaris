@@ -18,7 +18,7 @@ program
   .command('init')
   .description('Initialize a new Polaris project')
   .argument('[project-name]', 'Name of the project')
-  .option('-t, --template <template>', 'Template to use (express-api, react-app)', 'express-api')
+  .option('-t, --template <template>', 'Template to use (backend, frontend, fullstack)')
   .option('-y, --yes', 'Skip prompts and use defaults', false)
   .action(initCommand);
 

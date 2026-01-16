@@ -1,6 +1,7 @@
+import { log } from '@polaris/logger';
 import type { Request, Response, Router } from 'express';
 import express from 'express';
-import { log } from '@polaris/logger';
+
 import { products } from '../data/products.js';
 
 const router: Router = express.Router();
@@ -38,9 +39,7 @@ router.get('/:id', (req: Request, res: Response) => {
 // GET products by category (public)
 router.get('/category/:category', (req: Request, res: Response) => {
   const { category } = req.params;
-  const filtered = products.filter(
-    (p) => p.category.toLowerCase() === category.toLowerCase()
-  );
+  const filtered = products.filter((p) => p.category.toLowerCase() === category.toLowerCase());
 
   log.info('Products filtered by category', { category, count: filtered.length });
   res.json({

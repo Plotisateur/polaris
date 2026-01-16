@@ -1,0 +1,17 @@
+site_name: PROJECT-TEMPLATE-BACK
+site_description: Project documentation of project template back
+
+repo_url: https://github.com/loreal-techaccelerator/project-template-back
+
+theme:
+    name: mkdocs
+    locale: en
+    highlightjs: true
+    hljs_languages:
+        - yaml
+
+nav:
+    - Home: README.md
+    - Getting Started: quick-start.md
+    - Developer Guide:
+        - Typescript: typescript.md

@@ -1,0 +1,51 @@
+{
+  "name": "@polaris/e2e-api",
+  "version": "1.0.0",
+  "description": "OpenAPI Express Router - Type-safe API routing with automatic validation for L'Oréal projects",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "typecheck": "tsc --noEmit"
+  },
+  "keywords": [
+    "openapi",
+    "express",
+    "router",
+    "typescript",
+    "validation",
+    "zod",
+    "type-safe"
+  ],
+  "author": "L'Oréal",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^5.0.1",
+    "yaml": "^2.8.1",
+    "zod": "^3.24.1",
+    "zod-openapi": "^3.1.2"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.0",
+    "@types/node": "^22.10.5",
+    "tsup": "^8.5.0",
+    "typescript": "~5.9.3"
+  },
+  "peerDependencies": {
+    "express": "^5.0.0"
+  }
+}

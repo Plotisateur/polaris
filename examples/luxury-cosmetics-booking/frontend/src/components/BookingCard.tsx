@@ -1,5 +1,5 @@
-import type { Booking } from '../types';
 import { bookingsApi } from '../services/api';
+import type { Booking } from '../types';
 
 interface BookingCardProps {
   booking: Booking;
@@ -17,7 +17,7 @@ export default function BookingCard({ booking, onCancelled }: BookingCardProps) 
       alert('✅ Réservation annulée avec succès');
       onCancelled();
     } catch (error) {
-      alert('❌ Erreur lors de l\'annulation');
+      alert("❌ Erreur lors de l'annulation");
       console.error(error);
     }
   };
@@ -30,7 +30,9 @@ export default function BookingCard({ booking, onCancelled }: BookingCardProps) 
           <div className="flex flex-wrap gap-4 text-gray-600">
             <div className="flex items-center gap-2">
               <span className="text-lg">📦</span>
-              <span className="font-medium">Quantité: <span className="text-black">{booking.quantity}</span></span>
+              <span className="font-medium">
+                Quantité: <span className="text-black">{booking.quantity}</span>
+              </span>
             </div>
             <div className="flex items-center gap-2">
               <span className="text-lg">📅</span>

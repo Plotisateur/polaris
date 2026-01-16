@@ -1,6 +1,7 @@
 import { useState } from 'react';
-import type { Product } from '../types';
+
 import { bookingsApi } from '../services/api';
+import type { Product } from '../types';
 
 interface ProductCardProps {
   product: Product;
@@ -51,7 +52,9 @@ export default function ProductCard({ product, onBookingCreated }: ProductCardPr
           <p className="text-gray-600 text-sm mb-4 line-clamp-2">{product.description}</p>
           <div className="flex justify-between items-center mt-4">
             <div className="text-2xl font-bold text-black">{product.price}€</div>
-            <div className={`text-sm font-medium ${product.stock > 0 ? 'text-green-600' : 'text-red-600'}`}>
+            <div
+              className={`text-sm font-medium ${product.stock > 0 ? 'text-green-600' : 'text-red-600'}`}
+            >
               {product.stock > 0 ? `✓ ${product.stock} en stock` : '✗ Rupture'}
             </div>
           </div>

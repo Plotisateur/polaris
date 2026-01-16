@@ -1,0 +1,251 @@
+@import 'tailwindcss';
+
+/* Tailwind Utilities */
+
+/* CSS Variables */
+@layer base {
+  :root {
+    /* Background Colors */
+    --background: hsl(0, 0%, 100%);
+    --foreground: hsl(204, 100%, 6%);
+
+    /* Primary Colors */
+    --primary: hsl(204, 100%, 9%);
+    --primary-foreground: hsl(0, 0%, 100%);
+
+    /* Secondary Colors */
+    --secondary: hsl(206, 8%, 58%);
+    --secondary-dark: hsl(0, 0%, 0%);
+    --secondary-main: hsl(206, 8%, 58%);
+    --secondary-light: hsl(0, 0%, 100%);
+    --secondary-light-grey: hsl(206, 8%, 70%);
+    --secondary-bright-blue: hsl(204, 100%, 70%);
+    --secondary-light-purple: hsl(270, 100%, 90%);
+    --secondary-light-tangerine: hsl(30, 100%, 90%);
+    --secondary-tangerine: hsl(30, 100%, 60%);
+    --secondary-dark-tangerine: hsl(30, 100%, 40%);
+    --secondary-bg-champagne: hsl(45, 100%, 90%);
+    --secondary-bg-champagne-lighter: hsl(45, 100%, 95%);
+    --secondary-champagne-lighter: hsl(45, 100%, 85%);
+    --secondary-champagne: hsl(45, 100%, 80%);
+    --secondary-dark-champagne: hsl(45, 100%, 60%);
+    --secondary-error-border: hsl(0, 100%, 70%);
+    --secondary-orange: hsl(30, 100%, 50%);
+    --secondary-light-green: hsl(120, 100%, 50%);
+
+    /* Grey Scale */
+    --grey-100: hsl(0, 0%, 95%);
+    --grey-200: hsl(0, 0%, 90%);
+    --grey-300: hsl(0, 0%, 80%);
+    --grey-400: hsl(0, 0%, 60%);
+    --grey-500: hsl(0, 0%, 50%);
+    --grey-600: hsl(0, 0%, 40%);
+    --grey-700: hsl(0, 0%, 30%);
+    --grey-800: hsl(0, 0%, 20%);
+    --grey-900: hsl(0, 0%, 10%);
+
+    /* System Colors */
+    --system-green: hsl(120, 100%, 50%);
+    --system-orange: hsl(30, 100%, 50%);
+    --system-soft-red: hsl(0, 100%, 60%);
+    --system-bright-red: hsl(0, 100%, 50%);
+    --system-red: hsl(0, 100%, 50%);
+
+    /* Alert Colors */
+    --alert-info: hsl(210, 100%, 90%);
+    --alert-warning: hsl(45, 100%, 90%);
+    --alert-success: hsl(120, 100%, 50%);
+    --alert-error: hsl(0, 100%, 50%);
+
+    /* Background Specific */
+    --bg-light: hsl(0, 0%, 100%);
+    --bg-smoked: hsl(0, 0%, 95%);
+    --bg-orange: hsl(30, 100%, 50%);
+    --bg-blue: hsl(210, 100%, 90%);
+    --bg-champagne: hsl(45, 100%, 90%);
+
+    /* Chart Colors */
+    --chart-grey-500: hsl(0, 0%, 50%);
+    --chart-grey-700: hsl(0, 0%, 30%);
+    --chart-grey-900: hsl(0, 0%, 10%);
+    --chart-champagne-500: hsl(45, 100%, 80%);
+    --chart-champagne-700: hsl(45, 100%, 70%);
+    --chart-champagne-900: hsl(45, 100%, 60%);
+
+    /* Table */
+    --table-border: hsl(0, 0%, 70%);
+
+    /* Font Sizes */
+    --font-size-default: 18px;
+    --font-size-mid-bigger: 19px;
+    --font-size-bigger: 20px;
+    --font-size-mid-lower: 16px;
+    --font-size-lower: 14px;
+    --font-size-small: 12px;
+  }
+
+  /* Override Tailwind default svg sizing if needed */
+  svg:not([class*='size-']) {
+    width: auto !important;
+    height: auto !important;
+  }
+}
+
+@theme {
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+
+  --radius-lg: var(--radius);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-sm: calc(var(--radius) - 4px);
+
+  --animate-accordion-down: accordion-down 0.2s ease-out;
+  --animate-accordion-up: accordion-up 0.2s ease-out;
+
+  @keyframes accordion-down {
+    from {
+      height: 0;
+    }
+    to {
+      height: var(--radix-accordion-content-height);
+    }
+  }
+  @keyframes accordion-up {
+    from {
+      height: var(--radix-accordion-content-height);
+    }
+    to {
+      height: 0;
+    }
+  }
+}
+
+@utility container {
+  margin-inline: auto;
+  padding-inline: 2rem;
+  @media (min-width: 640px) {
+    max-width: none;
+  }
+  @media (width >= 1400px) {
+    max-width: 1400px;
+  }
+}
+
+/*
+  The default border color has changed to `currentcolor` in Tailwind CSS v4,
+  so we've added these compatibility styles to make sure everything still
+  looks the same as it did with Tailwind CSS v3.
+
+  If we ever want to remove these styles, we need to add an explicit border
+  color utility to any element that depends on these defaults.
+*/
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentcolor);
+  }
+}
+
+/* Base Styles */
+@layer base {
+  /* body {
+    @apply bg-background text-foreground;
+    font-family: 'Gilroy', sans-serif;
+    font-size: var(--font-size-default);
+  } */
+
+  h1 {
+    font-size: var(--font-size-bigger);
+    font-weight: 600;
+  }
+
+  h2 {
+    font-size: var(--font-size-mid-bigger);
+    font-weight: 500;
+  }
+
+  h3 {
+    font-size: var(--font-size-default);
+    font-weight: 500;
+  }
+
+  p {
+    font-size: var(--font-size-default);
+    font-weight: 400;
+  }
+
+  small {
+    font-size: var(--font-size-small);
+    font-weight: 400;
+  }
+}
+
+/* Font Face Declarations */
+@font-face {
+  font-family: 'Gilroy';
+  font-weight: 100;
+  src: url('/fonts/Gilroy-Thin.woff2') format('woff2');
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Gilroy';
+  font-weight: 200;
+  src: url('/fonts/Gilroy-UltraLight.woff2') format('woff2');
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Gilroy';
+  font-weight: 300;
+  src: url('/fonts/Gilroy-Light.woff2') format('woff2');
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Gilroy';
+  font-weight: 400;
+  src: url('/fonts/Gilroy-Regular.woff2') format('woff2');
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Gilroy';
+  font-weight: 500;
+  src: url('/fonts/Gilroy-Medium.woff2') format('woff2');
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Gilroy';
+  font-weight: 600;
+  src: url('/fonts/Gilroy-SemiBold.woff2') format('woff2');
+  font-display: swap;
+}

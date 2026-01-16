@@ -1,0 +1,59 @@
+steps:
+  - id: 'Install dependencies'
+    name: 'node:20'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        corepack enable
+        corepack prepare pnpm@latest-9 --activate
+        pnpm install
+    env:
+      - COREPACK_INTEGRITY_KEYS=0
+  - id: 'Run linting'
+    name: 'node:20'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        corepack enable
+        corepack prepare pnpm@latest-9 --activate
+        pnpm run lint
+  - id: 'Run Sonar scanner'
+    name: 'europe-west1-docker.pkg.dev/itg-btshared-gbl-ww-pd/bta-gcr-sharedservices-ew1-pd/sharedservices-docker-sonar:latest'
+    secretEnv: ['SONAR_TOKEN']
+    env:
+      - 'ORGANIZATION=loreal-techaccelerator'
+      - 'REPO_NAME=$REPO_NAME'
+      - '_SOURCE_BRANCH=$BRANCH_NAME'
+      - '_BASE_BRANCH=$_BASE_BRANCH'
+      - '_PR_NUMBER=$_PR_NUMBER'
+      - 'COVERAGE_REPORT=-Dsonar.javascript.lcov.reportPaths=./coverage/lcov.info'
+      - 'VERSION=$TAG_NAME'
+      - 'SOURCES=.'
+  - id: 'Run TESTIM tests' # please ensure TESTIM vars exist in devops secret manager. Remove if testim is not used.
+    name: node:20
+    secretEnv:
+      ['BEAUTYTECH_GENERIC_USER', 'TESTIM_ACCESS_TOKEN', 'TESTIM_PROJECT_ID', 'TESTIM_GRID_NAME']
+    entrypoint: './run_testim.sh'
+    env:
+      - 'BRANCH_NAME=$_BASE_BRANCH'
+availableSecrets:
+  secretManager:
+    - versionName: projects/itg-btshared-gbl-ww-pd/secrets/SONAR_TOKEN/versions/latest
+      env: 'SONAR_TOKEN'
+    - versionName: projects/$PROJECT_ID/secrets/TESTIM_PROJECT_ID/versions/latest
+      env: TESTIM_PROJECT_ID
+    - versionName: projects/$PROJECT_ID/secrets/TESTIM_ACCESS_TOKEN/versions/latest
+      env: TESTIM_ACCESS_TOKEN
+    - versionName: projects/$PROJECT_ID/secrets/TESTIM_GRID_NAME/versions/latest
+      env: TESTIM_GRID_NAME
+    - versionName: projects/itg-btshared-gbl-ww-pd/secrets/BEAUTYTECH_GENERIC_USER/versions/latest
+      env: BEAUTYTECH_GENERIC_USER
+logsBucket: 'gs://cloudbuild-logs-$PROJECT_ID'
+options:
+  logging: LEGACY
+tags:
+  - env.${_ENVIRONMENT}
+  - trigger.${TRIGGER_NAME}
+  - ops.CI

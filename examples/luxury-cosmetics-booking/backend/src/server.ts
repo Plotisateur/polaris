@@ -1,10 +1,11 @@
 import 'dotenv/config';
-import express, { type Application, type Request, type Response, type NextFunction } from 'express';
-import cors from 'cors';
-import { createAuthMiddleware, createAuthRoutes, corsMiddleware } from '@polaris/authentication';
+
+import { createAuthRoutes, corsMiddleware, createAuthMiddleware } from '@polaris/authentication';
 import { log } from '@polaris/logger';
-import productsRoutes from './routes/products.js';
+import express, { type Application, type Request, type Response, type NextFunction } from 'express';
+
 import bookingsRoutes from './routes/bookings.js';
+import productsRoutes from './routes/products.js';
 
 const app: Application = express();
 const PORT = process.env.PORT || 3001;
@@ -53,10 +54,13 @@ app.get('/api/auth/me', authMiddleware, authRoutes.me);
 
 // Routes
 app.use('/api/products', productsRoutes);
-app.use('/api/bookings', authMiddleware, bookingsRoutes);
+// Cast explicite pour éviter les conflits de types Express entre modules
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+app.use('/api/bookings', authMiddleware, bookingsRoutes as any);
 
 // Error handling
-app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
+// eslint-disable-next-line no-unused-vars
+app.use((err: Error, req: Request, res: Response, _next: NextFunction) => {
   log.error('Server error', err);
   res.status(500).json({
     error: 'Internal server error',
@@ -69,7 +73,4 @@ app.listen(PORT, () => {
     port: PORT,
     env: process.env.NODE_ENV || 'development',
   });
-  console.log(`\n✨ L'Oréal Luxury Cosmetics Booking API`);
-  console.log(`📍 Running on http://localhost:${PORT}`);
-  console.log(`� Mock user: ${process.env.DEV_USER_EMAIL || 'demo.user@loreal.com'}\n`);
 });

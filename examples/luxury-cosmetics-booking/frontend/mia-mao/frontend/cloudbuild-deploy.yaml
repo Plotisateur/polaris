@@ -1,0 +1,51 @@
+steps:
+  - id: 'Install dependencies'
+    name: node:20
+    entrypoint: bash
+    env:
+      - COREPACK_INTEGRITY_KEYS=0
+    args:
+      - '-c'
+      - |
+        corepack enable
+        corepack prepare pnpm@latest-9 --activate
+        pnpm install
+
+  # Prepare env variables
+  - id: 'Prepare environment variables'
+    name: 'ubuntu:20.04'
+    entrypoint: 'bash'
+    secretEnv: ['GTM_CONTAINER_ID']
+    args:
+      - '-c'
+      - |
+        export VITE_GTM_CONTAINER_ID=$(echo $$GTM_CONTAINER_ID)
+        export VITE_ENVIRONMENT=${_ENVIRONMENT}
+        printenv > .env
+
+  - id: 'Build the react application'
+    name: node:20
+    entrypoint: yarn
+    args: ['build:front']
+
+  - id: 'Deploy to app engine'
+    name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        gcloud config set app/cloud_build_timeout 2000
+        gcloud app deploy --project=${_PROJECT_ID}
+
+availableSecrets:
+  secretManager:
+    - versionName: projects/$_TARGET_PROJECT_ID/secrets/GTM_CONTAINER_ID/versions/latest
+      env: GTM_CONTAINER_ID
+timeout: 1600s
+logsBucket: 'gs://cloudbuild-logs-$PROJECT_ID'
+options:
+  logging: LEGACY
+tags:
+  - env.${_ENVIRONMENT}
+  - trigger.${TRIGGER_NAME}
+  - ops.CD

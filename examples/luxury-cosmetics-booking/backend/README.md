@@ -26,12 +26,14 @@ npm start
 ## 📡 API Endpoints
 
 ### Public Routes
+
 - `GET /health` - Health check
 - `GET /api/products` - List all products
 - `GET /api/products/:id` - Get product by ID
 - `GET /api/products/category/:category` - Filter by category
 
 ### Protected Routes (require IAP authentication)
+
 - `GET /api/bookings` - Get user's bookings
 - `POST /api/bookings` - Create new booking
 - `DELETE /api/bookings/:id` - Cancel booking

@@ -4,19 +4,19 @@ import winston from 'winston';
 import { createConsoleTransport, createFileTransport, createSentryTransport } from './transports';
 import type { LoggerConfig, LogLevel, LogMeta } from './types';
 
-if (process.env.SENTRY_DSN) {
+if (process.env['SENTRY_DSN']) {
   Sentry.init({
-    dsn: process.env.SENTRY_DSN,
-    environment: process.env.NODE_ENV || 'development',
+    dsn: process.env['SENTRY_DSN'],
+    environment: process.env['NODE_ENV'] || 'development',
     tracesSampleRate: 1.0,
   });
 }
 
 const config: LoggerConfig = {
-  level: (process.env.LOG_LEVEL as LogLevel) || 'info',
-  enableConsole: process.env.NODE_ENV !== 'production',
+  level: (process.env['LOG_LEVEL'] as LogLevel) || 'info',
+  enableConsole: process.env['NODE_ENV'] !== 'production',
   enableFile: true,
-  enableSentry: !!process.env.SENTRY_DSN,
+  enableSentry: !!process.env['SENTRY_DSN'],
 };
 
 const transports: winston.transport[] = [];

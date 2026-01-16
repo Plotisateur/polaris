@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react';
-import type { Product, Booking } from './types';
-import { productsApi, bookingsApi } from './services/api';
-import ProductCard from './components/ProductCard';
+
 import BookingCard from './components/BookingCard';
 import { Navbar } from './components/Navbar';
+import ProductCard from './components/ProductCard';
+import { productsApi, bookingsApi } from './services/api';
+import type { Product, Booking } from './types';
 
 function App() {
   const [products, setProducts] = useState<Product[]>([]);

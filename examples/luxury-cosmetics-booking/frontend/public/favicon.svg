@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <defs>
+    <linearGradient id="luxuryGold" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#D4AF37;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#F4E6C3;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#C9A961;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="roseGold" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#E8B298;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#D4A574;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="128" height="128" rx="24" fill="#1a1a1a"/>
+  
+  <!-- Lipstick icon with luxury feel -->
+  <g transform="translate(64, 64)">
+    <!-- Lipstick case (bottom) -->
+    <rect x="-12" y="8" width="24" height="32" rx="2" fill="url(#luxuryGold)" opacity="0.9"/>
+    <rect x="-11" y="9" width="22" height="30" rx="1.5" fill="#2a2a2a"/>
+    
+    <!-- Lipstick case details -->
+    <line x1="-12" y1="20" x2="12" y2="20" stroke="url(#roseGold)" stroke-width="0.5" opacity="0.6"/>
+    <line x1="-12" y1="28" x2="12" y2="28" stroke="url(#roseGold)" stroke-width="0.5" opacity="0.6"/>
+    
+    <!-- Lipstick bullet (top) -->
+    <path d="M -10,8 L -10,-15 Q -10,-20 -7,-23 L 0,-28 L 7,-23 Q 10,-20 10,-15 L 10,8 Z" 
+          fill="url(#roseGold)" opacity="0.95"/>
+    
+    <!-- Lipstick bullet highlight -->
+    <ellipse cx="-3" cy="-8" rx="3" ry="6" fill="#F5D5C0" opacity="0.4"/>
+    
+    <!-- Decorative shine -->
+    <circle cx="-6" cy="-18" r="1.5" fill="#FFF" opacity="0.8"/>
+    <circle cx="4" cy="-12" r="1" fill="#FFF" opacity="0.6"/>
+    
+    <!-- Luxury brand line accent -->
+    <rect x="-14" y="3" width="28" height="1.5" rx="0.75" fill="url(#luxuryGold)" opacity="0.7"/>
+  </g>
+  
+  <!-- Subtle sparkle effects -->
+  <circle cx="24" cy="24" r="1.5" fill="url(#luxuryGold)" opacity="0.6"/>
+  <circle cx="104" cy="32" r="1" fill="url(#roseGold)" opacity="0.5"/>
+  <circle cx="96" cy="96" r="1.5" fill="url(#luxuryGold)" opacity="0.6"/>
+  <circle cx="32" cy="100" r="1" fill="url(#roseGold)" opacity="0.5"/>
+</svg>

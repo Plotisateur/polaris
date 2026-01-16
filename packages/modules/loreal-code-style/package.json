@@ -1,6 +1,6 @@
 {
   "name": "@polaris/code-style",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Shared ESLint, Prettier, and TypeScript configuration for L'Oréal projects",
   "type": "module",
   "main": "./index.js",

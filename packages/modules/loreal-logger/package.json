@@ -1,6 +1,6 @@
 {
   "name": "@polaris/logger",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Structured logging with Winston + Sentry integration",
   "type": "module",
   "main": "./dist/index.js",

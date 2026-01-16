@@ -1,0 +1,116 @@
+steps:
+  - id: 'Install dependencies'
+    name: 'node:22'
+    entrypoint: bash
+    args:
+      - '-c'
+      - |
+        corepack enable
+        corepack prepare pnpm@latest-9 --activate
+        pnpm install
+    env:
+      - COREPACK_INTEGRITY_KEYS=0
+  - id: 'Run linting'
+    name: 'node:22'
+    entrypoint: bash
+    args:
+      - '-c'
+      - |
+        corepack enable
+        corepack prepare pnpm@latest-9 --activate
+        pnpm lint
+    env:
+      - COREPACK_INTEGRITY_KEYS=0
+
+  # - id: 'Run tests with coverage'
+  #   name: 'node:22'
+  #   #  entrypoint: './run_tests.sh'
+  #   entrypoint: sh
+  #   secretEnv:
+  #     - MCLI_PUBLIC_API_KEY
+  #     - MCLI_PRIVATE_API_KEY
+  #     - MCLI_PROJECT_ID
+  #     - MONGODB_CLUSTER_URL
+  #   env:
+  #     - ATLASCLI_VERSION=1.10.0
+  #   args:
+  #     - '-c'
+  #     - |
+  #       corepack enable
+  #       corepack prepare pnpm@latest-9 --activate
+  #       # Install mongo-cli and whitelist IP
+  #       apk add wget tar curl
+  #       wget -q https://fastdl.mongodb.org/mongocli/mongodb-atlas-cli_$${ATLASCLI_VERSION}_linux_x86_64.tar.gz
+  #       tar -xzf mongodb-atlas-cli_$${ATLASCLI_VERSION}_linux_x86_64.tar.gz
+  #       mongodb-atlas-cli_$${ATLASCLI_VERSION}_linux_x86_64/bin/atlas whitelist create $$(curl -s ifconfig.me) \
+  #         --type ipAddress \
+  #         --comment "Cloudbuild temporary IP for migration"
+
+  #       # Run tests
+  #       pnpm
+  #       pnpm test:coverage
+
+  #       # Remove whitelist IP
+  #       mongodb-atlas-cli_$${ATLASCLI_VERSION}_linux_x86_64/bin/atlas whitelist delete $$(curl -s ifconfig.me) --force
+  #       rm -rf mongodb-atlas-cli_$${ATLASCLI_VERSION}_linux_x86_64.tar.gz mongodb-atlas-cli_$${ATLASCLI_VERSION}_linux_x86_64
+
+  - id: 'Run Sonar scanner'
+    name: 'europe-west1-docker.pkg.dev/itg-btshared-gbl-ww-pd/bta-gcr-sharedservices-ew1-pd/sharedservices-docker-sonar:latest'
+    secretEnv: ['SONAR_TOKEN']
+    env:
+      - 'ORGANIZATION=loreal-techaccelerator'
+      - 'REPO_NAME=$REPO_NAME'
+      - '_SOURCE_BRANCH=$BRANCH_NAME'
+      - '_BASE_BRANCH=$_BASE_BRANCH'
+      - '_PR_NUMBER=$_PR_NUMBER'
+      - 'COVERAGE_REPORT=-Dsonar.javascript.lcov.reportPaths=./coverage/lcov.info'
+      - 'VERSION=$TAG_NAME'
+      - 'SOURCES=.'
+
+  - id: 'Run TESTIM tests'
+    name: node:22
+    secretEnv:
+      [
+        'BEAUTYTECH_GENERIC_USER',
+        'BEAUTYTECH_GENERIC_USER_2',
+        'BEAUTYTECH_GENERIC_USER_3',
+        'TESTIM_ACCESS_TOKEN',
+        'TESTIM_PROJECT_ID',
+        'TESTIM_GRID_NAME',
+      ]
+    entrypoint: './run_testim.sh'
+    env:
+      - COREPACK_INTEGRITY_KEYS=0
+      - '_BASE_BRANCH=$_BASE_BRANCH'
+availableSecrets:
+  secretManager:
+    - versionName: projects/itg-btshared-gbl-ww-pd/secrets/SONAR_TOKEN/versions/latest
+      env: 'SONAR_TOKEN'
+    - versionName: projects/$PROJECT_ID/secrets/TESTIM_PROJECT_ID/versions/latest
+      env: TESTIM_PROJECT_ID
+    - versionName: projects/$PROJECT_ID/secrets/TESTIM_ACCESS_TOKEN/versions/latest
+      env: TESTIM_ACCESS_TOKEN
+    - versionName: projects/$PROJECT_ID/secrets/TESTIM_GRID_NAME/versions/latest
+      env: TESTIM_GRID_NAME
+    - versionName: projects/itg-btshared-gbl-ww-pd/secrets/BEAUTYTECH_GENERIC_USER/versions/latest
+      env: BEAUTYTECH_GENERIC_USER
+    - versionName: projects/itg-btshared-gbl-ww-pd/secrets/BEAUTYTECH_GENERIC_USER_2/versions/latest
+      env: BEAUTYTECH_GENERIC_USER_2
+    - versionName: projects/itg-btshared-gbl-ww-pd/secrets/BEAUTYTECH_GENERIC_USER_3/versions/latest
+      env: BEAUTYTECH_GENERIC_USER_3
+    # - versionName: projects/$PROJECT_ID/secrets/MCLI_PUBLIC_API_KEY/versions/latest
+    #   env: MCLI_PUBLIC_API_KEY
+    # - versionName: projects/$PROJECT_ID/secrets/MCLI_PRIVATE_API_KEY/versions/latest
+    #   env: MCLI_PRIVATE_API_KEY
+    # - versionName: projects/$PROJECT_ID/secrets/MCLI_PROJECT_ID/versions/latest
+    #   env: MCLI_PROJECT_ID
+    # - versionName: projects/$PROJECT_ID/secrets/MONGODB_CLUSTER_URL/versions/latest
+    #   env: MONGODB_CLUSTER_URL
+timeout: '5400s'
+logsBucket: 'gs://cloudbuild-logs-$PROJECT_ID'
+options:
+  logging: LEGACY
+tags:
+  - env.devops
+  - trigger.${TRIGGER_NAME}
+  - ops.CI

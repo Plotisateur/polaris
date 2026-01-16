@@ -45,6 +45,10 @@ export default [
       'react-hooks': reactHooksPlugin,
     },
     rules: {
+      // Disable native rules that conflict with TypeScript
+      'no-unused-vars': 'off', // Use @typescript-eslint/no-unused-vars instead
+      'no-undef': 'off', // TypeScript handles this better
+
       // TypeScript
       '@typescript-eslint/no-unused-vars': [
         'error',

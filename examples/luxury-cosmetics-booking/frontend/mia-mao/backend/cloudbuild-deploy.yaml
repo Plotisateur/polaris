@@ -1,0 +1,83 @@
+steps:
+  - id: 'Pulling image if it already exist'
+    name: 'gcr.io/cloud-builders/docker'
+    entrypoint: 'bash'
+    args:
+      [
+        '-c',
+        'docker pull europe-west1-docker.pkg.dev/${PROJECT_ID}/docker-repository-devops/$REPO_NAME/$_LOCATION:$COMMIT_SHA || exit 0',
+      ]
+  # Build the container image
+  - id: 'Building docker image'
+    name: 'gcr.io/cloud-builders/docker'
+    args:
+      [
+        'build',
+        '-t',
+        'europe-west1-docker.pkg.dev/${PROJECT_ID}/docker-repository-devops/$REPO_NAME/$_LOCATION:$COMMIT_SHA',
+        '.',
+      ]
+  - id: Pushing docker image to registry
+    name: 'gcr.io/cloud-builders/docker'
+    args:
+      [
+        'push',
+        'europe-west1-docker.pkg.dev/${PROJECT_ID}/docker-repository-devops/$REPO_NAME/$_LOCATION:$COMMIT_SHA',
+      ]
+
+  #  Deploy container image to Cloud Run
+  - id: 'Deploying docker image to CloudRun'
+    name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: bash
+    secretEnv:
+      - MONGODB_CLUSTER_URL
+      - MONGODB_CLUSTER_ENDPOINT_URL
+    args:
+      - '-c'
+      - |
+        apt install wget
+        wget https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 -O /usr/bin/yq && chmod +x /usr/bin/yq
+        gcloud config set project ${_TARGET_PROJECT_ID}
+        gcloud config set run/platform managed
+        gcloud config set run/region ${_LOCATION}
+
+        ! gcloud run services describe web-app-backend-v2 --format export > service.yaml
+        ! yq -i 'del(.spec.template.metadata.name)' service.yaml
+        ! yq -i '.spec.template.spec.containers[0].startupProbe.initialDelaySeconds = 30' service.yaml
+        ! yq -i '.spec.template.spec.containers[0].startupProbe.failureThreshold = 5' service.yaml
+        ! gcloud run services replace service.yaml
+        # set min instances in PROD
+        MIN_INSTANCES=""
+        if [ "$_ENVIRONMENT" != "dv" ]
+        then
+          MIN_INSTANCES="--min-instances 2"
+        fi
+
+        gcloud run deploy web-app-backend \
+          --env-vars-file .env.${_ENVIRONMENT}.rc \
+          --image europe-west1-docker.pkg.dev/${PROJECT_ID}/docker-repository-devops/$REPO_NAME/$_LOCATION:$COMMIT_SHA \
+          --service-account bta-sa-web-backend-${_ENVIRONMENT}@${_TARGET_PROJECT_ID}.iam.gserviceaccount.com \
+          --cpu 1 --memory 1Gi --port 8000 --concurrency 80 --max-instances 10 \
+          --update-secrets=APP_GCP_CLIENT_ID=GCP_CLIENT_ID:latest \
+          --update-secrets=APP_GCP_CLIENT_SECRET=GCP_CLIENT_SECRET:latest \
+          --update-secrets=MONGODB_CLUSTER_ENDPOINT_URL=MONGODB_CLUSTER_ENDPOINT_URL:latest \
+          --update-secrets=MONGODB_CLUSTER_URL=MONGODB_CLUSTER_URL:latest \
+          --network=bta-vpc-doap-${_ENVIRONMENT} \
+          --subnet=mongodb-atlas-psc-subnet \
+          --clear-vpc-connector \
+          --vpc-egress=private-ranges-only
+
+timeout: '3600s'
+availableSecrets:
+  secretManager:
+    - versionName: projects/${_TARGET_PROJECT_ID}/secrets/MONGODB_CLUSTER_URL/versions/latest
+      env: MONGODB_CLUSTER_URL
+    - versionName: projects/${_TARGET_PROJECT_ID}/secrets/MONGODB_CLUSTER_ENDPOINT_URL/versions/latest
+      env: MONGODB_CLUSTER_ENDPOINT_URL
+logsBucket: 'gs://cloudbuild-logs-$PROJECT_ID'
+options:
+  logging: LEGACY
+tags:
+  - env.${_ENVIRONMENT}
+  - trigger.${TRIGGER_NAME}
+  - ops.CD
